@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic Content Playground</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 20px auto; 
+            padding: 20px; 
+        }
+        .section { 
+            margin: 30px 0; 
+            padding: 20px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            background: #f9f9f9; 
+        }
+        .alert { 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+            font-weight: bold; 
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .todo-item { 
+            padding: 10px; 
+            margin: 5px 0; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .todo-item.completed { 
+            background: #f0f0f0; 
+            text-decoration: line-through; 
+            opacity: 0.7; 
+        }
+        .user-card { 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            padding: 15px; 
+            margin: 10px; 
+            display: inline-block; 
+            width: 200px; 
+            text-align: center; 
+        }
+        .online { border-color: #28a745; background: #f8fff9; }
+        .offline { border-color: #dc3545; background: #fff8f8; }
+        button { 
+            padding: 8px 16px; 
+            margin: 5px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 14px; 
+        }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-warning { background: #ffc107; color: black; }
+        button:hover { opacity: 0.8; }
+        input, select { 
+            padding: 8px; 
+            margin: 5px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+        }
+        .stats { 
+            display: flex; 
+            gap: 20px; 
+            margin: 20px 0; 
+        }
+        .stat-card { 
+            padding: 15px; 
+            border-radius: 8px; 
+            text-align: center; 
+            flex: 1; 
+        }
+        .hidden { display: none; }
+        .fade-toggle { transition: opacity 0.3s; }
+    </style>
+</head>
+<body>
+    <!-- Include Vue -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <div id="app">
+        <h1>🎭 Dynamic Content Playground</h1>
+
+        <!-- Section 1: Basic Conditional Rendering -->
+        <div class="section">
+            <h2>🎯 Basic Show/Hide with v-if</h2>
+            
+            <button @click="isLoggedIn = !isLoggedIn" class="btn-primary">
+                {{ isLoggedIn ? 'Logout' : 'Login' }}
+            </button>
+            
+            <!-- v-if: Completely removes/adds element -->
+            <div v-if="isLoggedIn" class="alert success">
+                ✅ Welcome back! You are logged in.
+            </div>
+            <div v-else class="alert warning">
+                ⚠️ Please log in to access your account.
+            </div>
+
+            <!-- v-show: Always in DOM, just hidden -->
+            <p>
+                <strong>v-show example:</strong>
+                <span v-show="isLoggedIn" style="color: green;">🟢 Online</span>
+                <span v-show="!isLoggedIn" style="color: red;">🔴 Offline</span>
+            </p>
+        </div>
+
+        <!-- Section 2: Multiple Conditions with v-else-if -->
+        <div class="section">
+            <h2>🚦 Multiple Conditions with v-else-if</h2>
+            
+            <select v-model="userType">
+                <option value="">Select user type</option>
+                <option value="admin">Admin</option>
+                <option value="moderator">Moderator</option>
+                <option value="user">Regular User</option>
+                <option value="guest">Guest</option>
+            </select>
+
+            <div v-if="userType === 'admin'" class="alert success">
+                👑 Admin Access: You can manage everything!
+            </div>
+            <div v-else-if="userType === 'moderator'" class="alert info">
+                🛡️ Moderator Access: You can manage content.
+            </div>
+            <div v-else-if="userType === 'user'" class="alert info">
+                👤 User Access: You can view and edit your content.
+            </div>
+            <div v-else-if="userType === 'guest'" class="alert warning">
+                👻 Guest Access: Limited viewing permissions.
+            </div>
+            <div v-else class="alert error">
+                ❌ Please select a user type above.
+            </div>
+        </div>
+
+        <!-- Section 3: v-if vs v-show Comparison -->
+        <div class="section">
+            <h2>⚖️ v-if vs v-show: See the Difference!</h2>
+            
+            <button @click="showComparison = !showComparison" class="btn-warning">
+                Toggle Comparison
+            </button>
+            
+            <div style="display: flex; gap: 20px; margin-top: 15px;">
+                <div style="flex: 1;">
+                    <h4>Using v-if (removes from DOM):</h4>
+                    <div v-if="showComparison" class="alert info">
+                        🗑️ I get completely removed from the DOM when hidden!
+                    </div>
+                </div>
+                
+                <div style="flex: 1;">
+                    <h4>Using v-show (hidden with CSS):</h4>
+                    <div v-show="showComparison" class="alert info">
+                        👻 I stay in the DOM but become invisible!
+                    </div>
+                </div>
+            </div>
+            
+            <p><small>💡 <strong>Tip:</strong> Open browser dev tools and watch the DOM when you toggle!</small></p>
+        </div>
+
+        <!-- Section 4: List Rendering with v-for -->
+        <div class="section">
+            <h2>📝 Dynamic Lists with v-for</h2>
+            
+            <!-- Simple Todo List -->
+            <h3>Simple Todo List</h3>
+            <div>
+                <input v-model="newTodo" @keyup.enter="addTodo" placeholder="Add a new todo...">
+                <button @click="addTodo" class="btn-success">Add Todo</button>
+            </div>
+            
+            <div v-if="todos.length === 0" class="alert info">
+                📝 No todos yet. Add one above!
+            </div>
+            
+            <div v-else>
+                <div v-for="todo in todos" :key="todo.id" class="todo-item" :class="{ completed: todo.completed }">
+                    <span>{{ todo.text }}</span>
+                    <div>
+                        <button @click="toggleTodo(todo.id)" class="btn-warning">
+                            {{ todo.completed ? 'Undo' : 'Done' }}
+                        </button>
+                        <button @click="removeTodo(todo.id)" class="btn-danger">Delete</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List Statistics -->
+            <div v-if="todos.length > 0" class="stats">
+                <div class="stat-card" style="background: #e7f3ff;">
+                    <strong>{{ totalTodos }}</strong><br>
+                    Total Todos
+                </div>
+                <div class="stat-card" style="background: #e8f5e8;">
+                    <strong>{{ completedTodos }}</strong><br>
+                    Completed
+                </div>
+                <div class="stat-card" style="background: #fff3e0;">
+                    <strong>{{ remainingTodos }}</strong><br>
+                    Remaining
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Complex List with Objects -->
+        <div class="section">
+            <h2>👥 User List with Complex Data</h2>
+            
+            <div>
+                <button @click="addRandomUser" class="btn-success">Add Random User</button>
+                <button @click="toggleAllOnline" class="btn-primary">Toggle All Online/Offline</button>
+                <select v-model="filterStatus">
+                    <option value="all">Show All</option>
+                    <option value="online">Online Only</option>
+                    <option value="offline">Offline Only</option>
+                </select>
+            </div>
+
+            <div v-if="filteredUsers.length === 0" class="alert warning">
+                No users match the current filter.
+            </div>
+
+            <div v-for="user in filteredUsers" :key="user.id" class="user-card" :class="{ online: user.isOnline, offline: !user.isOnline }">
+                <h4>{{ user.name }}</h4>
+                <p>{{ user.email }}</p>
+                <p><strong>Role:</strong> {{ user.role }}</p>
+                <p>
+                    Status: 
+                    <span :style="{ color: user.isOnline ? 'green' : 'red' }">
+                        {{ user.isOnline ? '🟢 Online' : '🔴 Offline' }}
+                    </span>
+                </p>
+                <button @click="toggleUserStatus(user.id)" class="btn-warning">
+                    {{ user.isOnline ? 'Set Offline' : 'Set Online' }}
+                </button>
+                <button @click="removeUser(user.id)" class="btn-danger">Remove</button>
+            </div>
+        </div>
+
+        <!-- Section 6: Nested Lists -->
+        <div class="section">
+            <h2>🏢 Nested Lists: Departments & Employees</h2>
+            
+            <div v-for="department in departments" :key="department.id" style="margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 8px;">
+                <h3>{{ department.name }} ({{ department.employees.length }} employees)</h3>
+                
+                <div v-if="department.employees.length === 0" class="alert info">
+                    No employees in this department yet.
+                </div>
+                
+                <div v-else>
+                    <ul>
+                        <li v-for="employee in department.employees" :key="employee.id">
+                            <strong>{{ employee.name }}</strong> - {{ employee.position }}
+                            <span v-if="employee.isManager" style="color: gold;">👑 Manager</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue
+
+        createApp({
+            setup() {
+                // Basic conditional data
+                const isLoggedIn = ref(false)
+                const userType = ref('')
+                const showComparison = ref(true)
+                
+                // Todo list data
+                const newTodo = ref('')
+                const todos = ref([
+                    { id: 1, text: 'Learn Vue.js', completed: false },
+                    { id: 2, text: 'Build awesome apps', completed: false },
+                    { id: 3, text: 'Master conditional rendering', completed: true }
+                ])
+                
+                // User list data
+                const users = ref([
+                    { id: 1, name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin', isOnline: true },
+                    { id: 2, name: 'Bob Smith', email: 'bob@example.com', role: 'User', isOnline: false },
+                    { id: 3, name: 'Carol Brown', email: 'carol@example.com', role: 'Moderator', isOnline: true }
+                ])
+                const filterStatus = ref('all')
+                
+                // Departments data (nested lists)
+                const departments = ref([
+                    {
+                        id: 1,
+                        name: 'Engineering',
+                        employees: [
+                            { id: 1, name: 'John Doe', position: 'Senior Developer', isManager: true },
+                            { id: 2, name: 'Jane Smith', position: 'Frontend Developer', isManager: false },
+                            { id: 3, name: 'Mike Johnson', position: 'Backend Developer', isManager: false }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        name: 'Marketing',
+                        employees: [
+                            { id: 4, name: 'Sarah Wilson', position: 'Marketing Manager', isManager: true },
+                            { id: 5, name: 'Tom Brown', position: 'Content Creator', isManager: false }
+                        ]
+                    },
+                    {
+                        id: 3,
+                        name: 'Sales',
+                        employees: []
+                    }
+                ])
+                
+                // Computed properties for todo statistics
+                const totalTodos = computed(() => todos.value.length)
+                const completedTodos = computed(() => todos.value.filter(todo => todo.completed).length)
+                const remainingTodos = computed(() => todos.value.filter(todo => !todo.completed).length)
+                
+                // Computed property for filtered users
+                const filteredUsers = computed(() => {
+                    if (filterStatus.value === 'all') return users.value
+                    if (filterStatus.value === 'online') return users.value.filter(user => user.isOnline)
+                    if (filterStatus.value === 'offline') return users.value.filter(user => !user.isOnline)
+                    return users.value
+                })
+                
+                // Todo methods
+                const addTodo = () => {
+                    if (newTodo.value.trim()) {
+                        todos.value.push({
+                            id: Date.now(),
+                            text: newTodo.value.trim(),
+                            completed: false
+                        })
+                        newTodo.value = ''
+                    }
+                }
+                
+                const toggleTodo = (id) => {
+                    const todo = todos.value.find(t => t.id === id)
+                    if (todo) {
+                        todo.completed = !todo.completed
+                    }
+                }
+                
+                const removeTodo = (id) => {
+                    todos.value = todos.value.filter(t => t.id !== id)
+                }
+                
+                // User methods
+                const addRandomUser = () => {
+                    const names = ['David Wilson', 'Emma Davis', 'Frank Miller', 'Grace Lee', 'Henry Taylor']
+                    const roles = ['User', 'Moderator', 'Admin']
+                    const randomName = names[Math.floor(Math.random() * names.length)]
+                    const randomRole = roles[Math.floor(Math.random() * roles.length)]
+                    
+                    users.value.push({
+                        id: Date.now(),
+                        name: randomName,
+                        email: randomName.toLowerCase().replace(' ', '.') + '@example.com',
+                        role: randomRole,
+                        isOnline: Math.random() > 0.5
+                    })
+                }
+                
+                const toggleUserStatus = (id) => {
+                    const user = users.value.find(u => u.id === id)
+                    if (user) {
+                        user.isOnline = !user.isOnline
+                    }
+                }
+                
+                const removeUser = (id) => {
+                    users.value = users.value.filter(u => u.id !== id)
+                }
+                
+                const toggleAllOnline = () => {
+                    const allOnline = users.value.every(user => user.isOnline)
+                    users.value.forEach(user => {
+                        user.isOnline = !allOnline
+                    })
+                }
+                
+                return {
+                    // Basic conditional data
+                    isLoggedIn,
+                    userType,
+                    showComparison,
+                    
+                    // Todo data and methods
+                    newTodo,
+                    todos,
+                    totalTodos,
+                    completedTodos,
+                    remainingTodos,
+                    addTodo,
+                    toggleTodo,
+                    removeTodo,
+                    
+                    // User data and methods
+                    users,
+                    filterStatus,
+                    filteredUsers,
+                    addRandomUser,
+                    toggleUserStatus,
+                    removeUser,
+                    toggleAllOnline,
+                    
+                    // Department data
+                    departments
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
