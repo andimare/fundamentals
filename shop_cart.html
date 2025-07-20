@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="app">
+        <template v-for="product in products" :key="id">
+            <div>
+                <p>{{ product.name }}</p>
+                <p>KES: {{ product.price }}</p>
+                <p>Available: {{ product.quantity }}</p>
+            </div>
+        </template>
+    </div>
+    <!-- Include Vue -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup(){
+                const products = ref([
+                    {id:1, name: 'laptop', price: 100, quantity: 1},
+                    {id:2, name: 'Phone', price: 200, quantity: 2},
+                    {id:3, name: 'bag', price: 300, quantity: 3},
+                ])
+
+                return {
+                    products,
+                }
+            }
+        }).mount('.app');
+    </script>
+</body>
+</html>
