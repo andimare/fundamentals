@@ -4,16 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 p-8">
     <div class="app">
-        <template v-for="product in products" :key="id">
-            <div>
-                <p>{{ product.name }}</p>
-                <p>KES: {{ product.price }}</p>
-                <p>Available: {{ product.quantity }}</p>
-            </div>
-        </template>
+        <div class="flex flex-wrap gap-6 justify-center">
+            <template v-for="product in products" :key="id">
+                <div class="bg-white rounded-lg shadow-md p-6 w-64 transform transition-transform hover:-translate-y-2">
+                    <p class="text-xl font-bold mb-3 text-gray-800">{{ product.name }}</p>
+                    <p class="text-lg font-semibold text-green-600 my-2">KES: {{ product.price }}</p>
+                    <p class="text-gray-600 mb-4">Available: {{ product.quantity }}</p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-2 border rounded-lg overflow-hidden">
+                            <button class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600" @click="product.request_no--">-</button>
+                            <span class="px-3 py-1">{{ product.request_no }}</span>
+                            <button class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600" @click="addQuantity(product.id)">+</button>
+                        </div>
+                        <button class="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600 transition-colors">
+                            + cart
+                        </button>
+                    </div>
+                </div>
+            </template>
+        </div>
     </div>
     <!-- Include Vue -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -23,10 +36,14 @@
         createApp({
             setup(){
                 const products = ref([
-                    {id:1, name: 'laptop', price: 100, quantity: 1},
-                    {id:2, name: 'Phone', price: 200, quantity: 2},
-                    {id:3, name: 'bag', price: 300, quantity: 3},
+                    {id:1, name: 'laptop', price: 100, quantity: 13, request_no: 0},
+                    {id:2, name: 'Phone', price: 200, quantity: 21, request_no: 0},
+                    {id:3, name: 'bag', price: 300, quantity: 53, request_no: 0},
                 ])
+
+                const addQuantity = (id) => {
+                    // console.log(id)
+                }
 
                 return {
                     products,
